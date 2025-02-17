@@ -30,10 +30,15 @@ jobs:
 
   deploy:
         needs: docker
+        concurrency: 
+            cancel-in-progress: true
+            group: production-deployment
         runs-on: ubuntu-latest
         steps:
             - name: Docker Run
-              run: echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+              run: |
+                echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+                sleep 600s
 #   docker:
 #     runs-on: ubuntu-latest
 #     steps:
